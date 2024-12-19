@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "monorepo": true,
+  "root": "apps",
+  "sourceRoot": "apps/pogos-core/src",
+  "projects": {
+    "pogos-core": {
+      "type": "application",
+      "root": "apps/pogos-core",
+      "entryFile": "main",
+      "sourceRoot": "apps/pogos-core/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/pogos-core/tsconfig.app.json"
+      }
+    },
+    "pogos-games": {
+      "type": "application",
+      "root": "apps/pogos-games",
+      "entryFile": "main",
+      "sourceRoot": "apps/pogos-games/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/pogos-games/tsconfig.app.json"
+      }
+    }
+  }
+}
