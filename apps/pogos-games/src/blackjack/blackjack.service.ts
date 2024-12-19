@@ -142,7 +142,6 @@ export class BlackjackService {
       value -= 10;
       aceCount--;
     }
-
     return value;
   }
 
