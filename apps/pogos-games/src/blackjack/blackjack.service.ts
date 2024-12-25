@@ -28,6 +28,11 @@ export class BlackjackService {
     this.games.delete(client.id);
   }
 
+  restartGame(clientId: string): BlackjackDeckResponse {
+    this.clearHands(clientId);
+    return this.startGame(clientId);
+  }
+
   hit(clientId: string): BlackjackDeckResponse {
     const game = this.games.get(clientId);
     const card = this.drawCard(game.deck);

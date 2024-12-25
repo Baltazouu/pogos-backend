@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { BlackjackModule } from './blackjack/blackjack.module';
+import { AppModule } from './app.module';
 
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(BlackjackModule);
+  const app = await NestFactory.create(AppModule);
   // app.connectMicroservice<MicroserviceOptions>({
   //   transport: Transport.REDIS,
   //   options: {

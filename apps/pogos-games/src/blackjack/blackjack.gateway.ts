@@ -1,25 +1,28 @@
 import {
-  WebSocketGateway,
-  WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
   SubscribeMessage,
+  WebSocketGateway,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { Socket } from 'socket.io';
 import { BlackjackService } from './blackjack.service';
 import { BlackjackDeckResponse } from './dto/response/blackjack-deck-response.dto';
+import { ChatGateway } from '../chat/chat.gateway';
 
 @WebSocketGateway({ namespace: 'blackjack', cors: { origin: '*' } })
 export class BlackjackGateway
+  extends ChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
-  @WebSocketServer() server: Server;
-
-  constructor(private readonly blackjackService: BlackjackService) {}
+  constructor(private readonly blackjackService: BlackjackService) {
+    super();
+  }
 
   handleConnection(client: Socket) {
     console.log('Client connected:', client.id);
-    const deckResponse: BlackjackDeckResponse = this.blackjackService.startGame(client.id);
+    const deckResponse: BlackjackDeckResponse = this.blackjackService.startGame(
+      client.id,
+    );
     client.emit('game_update', deckResponse);
   }
 
@@ -37,6 +40,12 @@ export class BlackjackGateway
   @SubscribeMessage('STAND')
   async handleStand(client: Socket) {
     const result = this.blackjackService.stand(client.id);
+    client.emit('game_update', result);
+  }
+
+  @SubscribeMessage('RESTART')
+  async handleRestart(client: Socket) {
+    const result = this.blackjackService.restartGame(client.id);
     client.emit('game_update', result);
   }
 }
