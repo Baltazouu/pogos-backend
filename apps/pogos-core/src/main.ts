@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import * as process from 'node:process';
+import { ValidationPipe } from '@nestjs/common';
 
 declare const module: any;
 
@@ -15,6 +16,7 @@ async function bootstrap() {
       port: 6379,
     },
   });
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(process.env.port ?? 3001);
 
   if (module.hot) {
